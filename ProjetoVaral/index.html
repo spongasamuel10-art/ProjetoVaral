@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Varal Inteligente - Controle IoT</title>
+    
+    <!-- Configurações PWA -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0f172a">
+    <link rel="apple-touch-icon" href="varalgrande.png">
+    
+    <link rel="stylesheet" href="style.css">
+    
+</head>
+<body>
+
+<div class="dashboard">
+    <div>
+        <h1>Casa Inteligente ESP32</h1>
+        <p class="subtitle">Controle Automatizado de Varal</p>
+    </div>
+
+    <!-- Card Previsão do Tempo -->
+    <div class="card">
+        <div class="weather-header">
+            <div>
+                <div class="status-label">Clima Local</div>
+                <div class="temp" id="temp">--°C</div>
+            </div>
+            <div class="weather-details">
+                <div id="weather-desc">Carregando...</div>
+                <div id="rain-prob">Chuva: --%</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Card Controle do Varal -->
+    <div class="card">
+        <div class="status-label">Monitoramento em Tempo Real</div>
+        
+        <div class="status-grid">
+            <div class="status-box">
+                <div class="status-label">Posição Atual</div>
+                <div class="status-value" id="varal-status">Conectando...</div>
+            </div>
+            <div class="status-box">
+                <div class="status-label">Sensor de Chuva</div>
+                <div class="status-value" id="sensor-status">--</div>
+            </div>
+        </div>
+
+        <button id="btn-toggle-varal" class="btn-action btn-puxar">
+            Carregando...
+        </button>
+
+        <div class="toggle-row">
+            <span>Recolher automaticamente na chuva</span>
+            <input type="checkbox" id="check-auto" checked>
+        </div>
+    </div>
+
+    <!-- Card Estatísticas de Tempo (24h e Semanal) -->
+    <div class="card">
+        <div class="status-label">Tempo de Uso (Últimas 24h / Hoje)</div>
+        <div class="status-grid">
+            <div class="status-box">
+                <div class="status-label">Varal Aberto</div>
+                <div class="status-value text-green" id="tempo-aberto-24h">0h 00m</div>
+            </div>
+            <div class="status-box">
+                <div class="status-label">Varal Fechado</div>
+                <div class="status-value text-amber" id="tempo-fechado-24h">0h 00m</div>
+            </div>
+        </div>
+
+        <div class="history-section">
+            <div class="history-block">
+                <div class="history-title">Semana Atual (Últimos 7 dias)</div>
+                <div class="history-row">
+                    <span>Aberto: <strong class="text-green" id="sem-atual-aberto">0h 00m</strong></span>
+                    <span>Fechado: <strong class="text-amber" id="sem-atual-fechado">0h 00m</strong></span>
+                </div>
+            </div>
+
+            <div class="history-block">
+                <div class="history-title">Semana Anterior (7 dias passados)</div>
+                <div class="history-row">
+                    <span>Aberto: <strong class="text-green" id="sem-ant-aberto">0h 00m</strong></span>
+                    <span>Fechado: <strong class="text-amber" id="sem-ant-fechado">0h 00m</strong></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="module" src="script.js"></script>
+
+<script>
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('./sw.js')
+                .then(() => console.log('PWA registrado!'))
+                .catch((err) => console.error('Erro PWA:', err));
+        });
+    }
+</script>
+
+</body>
+</html>
